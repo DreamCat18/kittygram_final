@@ -5,6 +5,7 @@ volumes:
   static:
   media:
 
+
 services:
   db:
     image: postgres:13
@@ -32,11 +33,14 @@ services:
   gateway:
     image: $DOCKERHUB_USERNAME/kittygram_gateway:latest
     ports:
-      - 9000:80
+      - 80:80
+      - 443:443
     depends_on:
       - backend
       - frontend
     volumes:
       - static:/static
       - media:/media
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ssl/private:/etc/ssl/private:ro
     restart: always
