@@ -110,13 +110,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd kittygram
-            sudo docker compose -f docker-compose.production.yml pull
-            sudo docker compose -f docker-compose.production.yml down
-            sudo docker compose -f docker-compose.production.yml up -d
-            sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --noinput
-            sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/static /static
+            cd kittygram_final
+            sudo docker-compose --file docker-compose.production.yml pull
+            sudo docker-compose --file docker-compose.production.yml down
+            sudo docker-compose --file docker-compose.production.yml up -d
+            sleep 10
+            sudo docker-compose --file docker-compose.production.yml exec -T backend python manage.py migrate
+            sudo docker-compose --file docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput
+            sudo docker-compose --file docker-compose.production.yml exec -T backend cp -r /app/collected_static/. /backend_static/static/ 
 
       - name: Send Telegram Message
         uses: appleboy/telegram-action@v1.0.1
@@ -124,6 +125,6 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            Kittygram deployed successfully!
+            Деплой успешно выполнен!
             Frontend: http://${{ secrets.HOST }}:9000
             Backend: http://${{ secrets.HOST }}:9000/api/
