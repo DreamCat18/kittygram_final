@@ -117,7 +117,8 @@ jobs:
             sleep 10
             sudo docker-compose --file docker-compose.production.yml exec -T backend python manage.py migrate
             sudo docker-compose --file docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput
-            sudo docker-compose --file docker-compose.production.yml exec -T backend cp -r /app/collected_static/. /backend_static/static/ 
+            sudo docker-compose --file docker-compose.production.yml exec -T backend mkdir -p /backend_static/static/
+            sudo docker-compose --file docker-compose.production.yml exec -T backend cp -r /app/collected_static/. /backend_static/static/
 
       - name: Send Telegram Message
         uses: appleboy/telegram-action@v1.0.1
