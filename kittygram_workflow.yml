@@ -35,7 +35,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push backend
         uses: docker/build-push-action@v4
         with:
@@ -55,7 +55,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push frontend
         uses: docker/build-push-action@v4
         with:
@@ -75,7 +75,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push gateway
         uses: docker/build-push-action@v4
         with:
@@ -85,11 +85,13 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [build_and_push_backend, build_and_push_frontend, build_and_push_gateway]
+    needs: 
+      - build_and_push_backend
+      - build_and_push_frontend
+      - build_and_push_gateway
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Copy docker-compose.production.yml via ssh
         uses: appleboy/scp-action@master
         with:
@@ -119,8 +121,8 @@ jobs:
       - name: Send Telegram Message
         uses: appleboy/telegram-action@v3
         with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             Kittygram deployed successfully!
             Frontend: http://${{ secrets.HOST }}:9000

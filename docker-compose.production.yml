@@ -15,7 +15,7 @@ services:
     restart: always
 
   backend:
-    image: $DOCKERHUB_USERNAME/kittygram_backend:latest
+    image: dreamcat18/kittygram_backend:latest
     env_file: .env
     depends_on:
       - db
@@ -25,13 +25,13 @@ services:
     restart: always
 
   frontend:
-    image: $DOCKERHUB_USERNAME/kittygram_frontend:latest
+    image: dreamcat18/kittygram_frontend:latest
     volumes:
       - static:/app/build
     restart: always
 
   gateway:
-    image: $DOCKERHUB_USERNAME/kittygram_gateway:latest
+    image: dreamcat18/kittygram_gateway:latest
     ports:
       - 80:80
       - 443:443
