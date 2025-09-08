@@ -12,7 +12,12 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['localhost', '123.123.123.123', 'kittygramproject16.ddns.net']
+ALLOWED_HOSTS = [
+    '89.169.169.60',
+    'kittygramproject16.ddns.net',
+    'localhost',
+    '127.0.0.1'
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
