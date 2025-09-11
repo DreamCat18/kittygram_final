@@ -1,44 +1,43 @@
 volumes:
-  pg_data:
-  static:
-  media:
+  pg_data_production:
+  static_volume:
+  media_volume:
 
 
 services:
   db:
-    image: postgres:13
-    volumes:
-      - pg_data:/var/lib/postgresql/data
+    image: postgres:13.10
     env_file: .env
-    restart: always
+    volumes:
+      - pg_data_production:/var/lib/postgresql/data
 
   backend:
-    image: dreamcat18/kittygram_backend:latest
+    image: ${DOCKER_USERNAME}/kittygram_backend
     env_file: .env
+    volumes:
+      - static_volume:/backend_static
+      - media_volume:/app/media
     depends_on:
       - db
-    volumes:
-      - static:/app/static
-      - media:/app/media
-    restart: always
 
   frontend:
-    image: dreamcat18/kittygram_frontend:latest
+    env_file: .env
+    image: ${DOCKER_USERNAME}/kittygram_frontend
+    environment:
+      - API_URL=http://https://kittygramproject16.ddns.net:9000
+    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static:/app/build
-    restart: always
+      - static_volume:/frontend_static
 
   gateway:
-    image: dreamcat18/kittygram_gateway:latest
+    image: ${DOCKER_USERNAME}/kittygram_gateway
+    env_file: .env
     ports:
-      - 80:80
-      - 443:443
+      - "9000:80"
+    volumes:
+      - static_volume:/staticfiles/
+      - media_volume:/app/media
     depends_on:
       - backend
       - frontend
-    volumes:
-      - static:/static
-      - media:/media
-      - /etc/ssl/certs:/etc/ssl/certs:ro
-      - /etc/ssl/private:/etc/ssl/private:ro
     restart: always
