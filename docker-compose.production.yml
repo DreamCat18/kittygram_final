@@ -24,7 +24,7 @@ services:
     env_file: .env
     image: ${DOCKER_USERNAME}/kittygram_frontend
     environment:
-      - API_URL=http://https://kittygramproject16.ddns.net:9000
+      - API_URL=https://kittygramproject16.ddns.net:9000
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
