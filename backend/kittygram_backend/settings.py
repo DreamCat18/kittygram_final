@@ -10,7 +10,7 @@ SECRET_KEY = os.environ.get(
     'django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y- q*uq1!4$-89$'
 )
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '89.169.169.60',
@@ -63,16 +63,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'kittygram'),
-        'USER': os.environ.get('POSTGRES_USER', 'kittygram_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
-        'HOST': os.environ.get('DB_HOST', 'db'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('POSTGRES_DB', 'kittygram'),
+            'USER': os.environ.get('POSTGRES_USER', 'kittygram_user'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
+            'HOST': os.environ.get('DB_HOST', 'db'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+        }
+    }
 
 
 # Password validation
