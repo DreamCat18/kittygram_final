@@ -24,7 +24,7 @@ services:
     env_file: .env
     image: ${DOCKER_USERNAME}/kittygram_frontend
     environment:
-      - API_URL=https://kittygramproject16.ddns.net:9000
+      - API_URL=https://kittygramproject16.ddns.net
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
@@ -33,8 +33,10 @@ services:
     image: ${DOCKER_USERNAME}/kittygram_gateway
     env_file: .env
     ports:
-      - "9000:80"
+      - "80:80"
+      - "443:443"
     volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
       - static_volume:/staticfiles/
       - media_volume:/app/media
     depends_on:

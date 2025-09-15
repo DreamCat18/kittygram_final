@@ -1,4 +1,4 @@
-export const URL = "https://kittygramproject16.ddns.net/api";
+export const URL = "https://kittygramproject16.ddns.net";
 
 export const colorsList = [
   "#FFE4C4",
