@@ -20,7 +20,7 @@ services:
     env_file: .env
     volumes:
       - static_volume:/backend_static
-      - media_volume:/app/media
+      - media_volume:/media
     secrets:
       - SECRET_KEY
     depends_on:
@@ -44,7 +44,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - static_volume:/staticfiles/
-      - media_volume:/app/media
+      - media_volume:/media
     depends_on:
       - backend
       - frontend

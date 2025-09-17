@@ -54,22 +54,22 @@ export const AddCardPage = ({ extraClass = "" }) => {
     const photo = document.querySelector('input[type="file"]').files[0];
     photo
       ? getBase64(photo).then((data) => {
-          card["image"] = data;
-          sendCard(card)
-            .then((res) => {
-              if (res && res.id) {
-                history.push(`/cats/${res.id}`);
-              }
-            })
-            .catch(handleResponse);
-        })
-      : sendCard(card)
+        card["image"] = data;
+        sendCard(card)
           .then((res) => {
             if (res && res.id) {
               history.push(`/cats/${res.id}`);
             }
           })
           .catch(handleResponse);
+      })
+      : sendCard(card)
+        .then((res) => {
+          if (res && res.id) {
+            history.push(`/cats/${res.id}`);
+          }
+        })
+        .catch(handleResponse);
   };
 
   return (
@@ -92,7 +92,7 @@ export const AddCardPage = ({ extraClass = "" }) => {
           <p className="text text_type_medium-16 text_color_primary">
             {currentFileName
               ? currentFileName
-              : "Загрузите фото в фотрмате JPG"}
+              : "Загрузите фото"}
           </p>
         </label>
         <input
@@ -100,6 +100,7 @@ export const AddCardPage = ({ extraClass = "" }) => {
           className={styles.file_input}
           name="image"
           id="image"
+          accept="image/*"
           onChange={onChangeInput}
         />
         <Input

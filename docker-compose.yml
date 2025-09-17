@@ -22,7 +22,7 @@ services:
       - "9000:9000"
     volumes:
       - static:/backend_static
-      - media:/app/media
+      - media:/media
 
   frontend:
     env_file: .env
@@ -38,7 +38,6 @@ services:
       - "80:80"
     volumes:
       - static:/staticfiles/
-      - media:/app/media
-      - ./frontend/build:/usr/share/nginx/html
+      - media:/media
     depends_on:
       - backend

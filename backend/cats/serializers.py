@@ -1,5 +1,6 @@
 import base64
 import datetime as dt
+import uuid
 
 import webcolors
 from django.core.files.base import ContentFile
@@ -34,7 +35,8 @@ class Base64ImageField(serializers.ImageField):
             format, imgstr = data.split(';base64,')
             ext = format.split('/')[-1]
 
-            data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+            data = ContentFile(base64.b64decode(imgstr),
+                               name=str(uuid.uuid4()) + '.' + ext)
 
         return super().to_internal_value(data)
 

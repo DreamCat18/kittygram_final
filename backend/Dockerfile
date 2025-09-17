@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y postgresql-server-dev-all build-essenti
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+RUN mkdir -p /media
+
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:9000", "kittygram_backend.wsgi:application"]
