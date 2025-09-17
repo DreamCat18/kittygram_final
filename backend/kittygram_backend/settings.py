@@ -5,7 +5,11 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = open('/run/secrets/SECRET_KEY').read().strip()
+try:
+    SECRET_KEY = open('/run/secrets/SECRET_KEY').read().strip()
+except FileNotFoundError:
+    SECRET_KEY = os.environ.get(
+        'SECRET_KEY', 'django-insecure-dev-key-for-testing')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
