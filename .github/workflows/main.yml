@@ -111,6 +111,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd kittygram_final
+            export DOCKER_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             sudo docker-compose --file docker-compose.production.yml pull
             sudo docker-compose --file docker-compose.production.yml down
             sudo docker-compose --file docker-compose.production.yml up -d
