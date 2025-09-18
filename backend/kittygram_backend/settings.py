@@ -1,15 +1,18 @@
 """Django settings for kittygram_backend project."""
 
+import secrets
 import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 try:
     SECRET_KEY = open('/run/secrets/SECRET_KEY').read().strip()
 except FileNotFoundError:
-    SECRET_KEY = os.environ.get(
-        'SECRET_KEY', 'django-insecure-dev-key-for-testing')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    if not SECRET_KEY:
+        SECRET_KEY = secrets.token_urlsafe(50)
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
