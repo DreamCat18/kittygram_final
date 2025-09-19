@@ -62,7 +62,6 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/kittygram_frontend:latest
 
   build_and_push_gateway:
-    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

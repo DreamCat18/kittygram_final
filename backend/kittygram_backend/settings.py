@@ -1,7 +1,7 @@
 """Django settings for kittygram_backend project."""
 
-import secrets
 import os
+import secrets
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
