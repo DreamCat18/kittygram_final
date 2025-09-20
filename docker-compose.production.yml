@@ -1,51 +1,41 @@
+version: "3"
 volumes:
-  pg_data_production:
-  static_volume:
-  media_volume:
-
-
-secrets:
-  SECRET_KEY:
-    file: ./SECRET_KEY.txt
+  media: null
+  pg_data: null
+  static: null
 
 services:
   db:
     image: postgres:13.10
     env_file: .env
     volumes:
-      - pg_data_production:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: ${DOCKER_USERNAME}/kittygram_backend
+    image: dreamcat18/kittygram_backend
     env_file: .env
-    volumes:
-      - static_volume:/backend_static
-      - media_volume:/media
-    secrets:
-      - SECRET_KEY
     depends_on:
       - db
+    volumes:
+      - static:/backend_static
+      - media:/app/media
+    command: [ "gunicorn", "--bind", "0.0.0.0:9000", "kittygram_backend.wsgi" ]
 
   frontend:
+    image: dreamcat18/kittygram_frontend
     env_file: .env
-    image: ${DOCKER_USERNAME}/kittygram_frontend
-    environment:
-      - API_URL=https://kittygramproject16.ddns.net
     command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static_volume:/frontend_static
+      - static:/frontend_static
 
   gateway:
-    image: ${DOCKER_USERNAME}/kittygram_gateway
+    image: dreamcat18/kittygram_gateway
     env_file: .env
-    ports:
-      - "9000:80"
-      - "443:443"
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - static_volume:/staticfiles/
-      - media_volume:/media
     depends_on:
       - backend
       - frontend
-    restart: always
+    volumes:
+      - static:/staticfiles
+      - media:/media
+    ports:
+      - 9000:80
