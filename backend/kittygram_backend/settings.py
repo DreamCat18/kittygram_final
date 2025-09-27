@@ -7,16 +7,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-try:
-    SECRET_KEY = open('/run/secrets/SECRET_KEY').read().strip()
-except FileNotFoundError:
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    if not SECRET_KEY:
-        SECRET_KEY = secrets.token_urlsafe(50)
+SECRET_KEY='django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y- q*uq1!4$-89$'
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG=True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost 127.0.0.1').split()
+ALLOWED_HOSTS=['89.169.169.60', 'kittygramproject16.ddns.net', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -61,25 +56,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
 
-
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'kittygram'),
+        'USER': os.environ.get('POSTGRES_USER', 'kittygram_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('POSTGRES_DB', 'kittygram'),
-            'USER': os.environ.get('POSTGRES_USER', 'kittygram_user'),
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
-            'HOST': os.environ.get('DB_HOST', 'db'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
-        }
-    }
+}
 
 
 # Password validation
@@ -123,14 +109,15 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(
-    BASE_DIR,
-    'collected_static'
-)
+# STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / 'collected_static'
+
+
+STATIC_URL = '/static_backend/'
+STATIC_ROOT = BASE_DIR / 'static_backend'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / ' /var/www/kittygram/media'
 
 DEFAULT_AUTO_FIELD = (
     'django.db.models.BigAutoField'
@@ -151,10 +138,10 @@ REST_FRAMEWORK = {
 
 }
 
-DJOSER = {
-    'CREATE_USER_WITHOUT_PERMISSION': True,
-    'SERIALIZERS': {
-        'user_create': 'djoser.serializers.UserCreateSerializer',
-        'user': 'djoser.serializers.UserSerializer',
-    },
-}
+# DJOSER = {
+#     'CREATE_USER_WITHOUT_PERMISSION': True,
+#     'SERIALIZERS': {
+#         'user_create': 'djoser.serializers.UserCreateSerializer',
+#         'user': 'djoser.serializers.UserSerializer',
+#     },
+# }
