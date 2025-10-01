@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-# from django.shortcuts import redirect
+
 from django.urls import include, path
 from rest_framework import routers
 
@@ -12,7 +12,6 @@ router.register(r'cats', CatViewSet)
 router.register(r'achievements', AchievementViewSet)
 
 urlpatterns = [
-    # path('', lambda request: redirect('/api/')),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/', include('djoser.urls')),  # Работа с пользователями
