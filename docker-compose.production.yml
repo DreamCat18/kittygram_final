@@ -1,8 +1,8 @@
-version: "3"
 volumes:
-  media: null
   pg_data: null
   static: null
+  media: null
+
 
 services:
   db:
@@ -10,33 +10,26 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-
   backend:
-    image: dreamcat18/kittygram_backend
+    image: dreamcat18/kittygram_backend:latest
     env_file: .env
     depends_on:
       - db
     volumes:
       - static:/backend_static
       - media:/app/media
-    entrypoint: [ "/entrypoint.prod.sh" ]
-    command: [ "gunicorn", "--bind", "0.0.0.0:9000", "kittygram_backend.wsgi" ]
-
   frontend:
-    image: dreamcat18/kittygram_frontend
+    image: dreamcat18/kittygram_frontend:latest
     env_file: .env
-    command: cp -r /app/build/. /frontend_static/
+    command: cp -r /app/build/. /static/
     volumes:
-      - static:/frontend_static
-
+      - static:/static
   gateway:
-    image: dreamcat18/kittygram_gateway
-    env_file: .env
+    image: dreamcat18/kittygram_gateway:latest
     depends_on:
       - backend
       - frontend
     volumes:
-      - static:/staticfiles
-      - media:/app/media
+      - static:/static
     ports:
-      - 9000:80
+      - "9000:80"

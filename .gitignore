@@ -150,6 +150,3 @@ media/
 
 # Others
 node_modules
-
-# Sensitive files
-SECRET_KEY.txt

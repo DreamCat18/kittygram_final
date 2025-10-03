@@ -14,7 +14,6 @@ import styles from "./sign-in.module.css";
 
 export const SignIn = ({ extraClass = "" }) => {
   const [userData, setUserData] = React.useState({});
-  // eslint-disable-next-line
   const [user, setUser] = React.useContext(UserContext);
   const [errorPassword, setErrorPassword] = React.useState("");
   const [errorLogin, setErrorLogin] = React.useState("");
