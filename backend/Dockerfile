@@ -8,7 +8,7 @@ COPY requirements.txt .
 RUN pip install --upgrade setuptools pip
 
 RUN pip install "cython<3.0.0" wheel
-RUN pip install "pyyaml==5.3.1" 
+RUN pip install "pyyaml==5.4" 
 
 RUN apk add build-base zlib-dev jpeg-dev
 
